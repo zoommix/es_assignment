@@ -1,0 +1,12 @@
+<%= render 'search_form' %>
+
+<h1>Search Results for "<%= query %>"</h1>
+<% if prompts.any? %>
+  <ul>
+    <% prompts.each do |product| %>
+      <li><%= product.content %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No results found.</p>
+<% end %>

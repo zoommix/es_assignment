@@ -27,6 +27,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'pry'
   gem 'rubocop', require: false
   gem 'solargraph', require: false
   gem 'web-console'
