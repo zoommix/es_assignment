@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
 import pyarrow.parquet as pq
@@ -26,20 +26,25 @@ db_params = {
 # Establish a connection to the PostgreSQL database
 connection = psycopg2.connect(**db_params)
 
-# Read .parquet file and convert to DataFrame
-table = pq.read_table(parquet_file)
-df = table.to_pandas()
-
-print(df.columns)
-
-# Iterate through DataFrame and insert into PostgreSQL
+# Check if the 'prompts' table is empty
 cursor = connection.cursor()
-for row in df['Prompt']:
+cursor.execute("SELECT COUNT(*) FROM prompts;")
+record_count = cursor.fetchone()[0]
+
+if record_count == 0:
+  # Read .parquet file and convert to DataFrame
+  table = pq.read_table(parquet_file)
+  df = table.to_pandas()
+
+  # Iterate through DataFrame and insert into PostgreSQL
+  for row in df['Prompt']:
     content = row
     query = "INSERT INTO prompts (content, created_at, updated_at) VALUES (%s, NOW(), NOW());"
     cursor.execute(query, (content,))
 
-connection.commit()
+  connection.commit()
+else:
+  print("The 'prompts' table is not empty. Skipping data import.")
 
 # Close the cursor and connection
 cursor.close()
