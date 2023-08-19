@@ -1,10 +1,10 @@
-<%= render 'search_form' %>
+<%= render 'search_form', query: query %>
 
 <h1>Search Results for "<%= query %>"</h1>
 <% if prompts.any? %>
   <ul>
-    <% prompts.each do |product| %>
-      <li><%= product.content %></li>
+    <% prompts.with_highlights do |prompt, details| %>
+      <li><%= simple_format details[:content] %></li>
     <% end %>
   </ul>
 <% else %>

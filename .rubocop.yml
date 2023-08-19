@@ -1,5 +1,10 @@
 AllCops:
-  Exclude: db/schema.rb
+  Exclude:
+    - db/schema.rb
 
 Style/Documentation:
   Enabled: false
+
+Layout/HashAlignment:
+  Enabled: true
+  EnforcedColonStyle: 'table'
