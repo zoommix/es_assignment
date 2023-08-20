@@ -1,4 +1,17 @@
 <%= form_with(url: search_path, method: :get, class: "search-form") do |form| %>
   <%= form.text_field :query, placeholder: "Search for products...", value: query %>
+
+  <%= form.label :match, "Match Type:" %>
+  <%= form.select :match, options_for_select(match_options, builder.match), \
+                          { prompt: 'Select Match Type' } %>
+
+  <%= form.label :operator, "Operator:" %>
+  <%= form.select :operator, options_for_select(operator_options, builder.operator), \
+                             { prompt: 'Select Operator' } %>
+
+  <%= form.label :misspellings, "Misspellings:" %>
+  <%= form.select :misspellings, options_for_select(misspellings_options, builder.misspellings), \
+                                 { prompt: 'Select Misspellings' } %>
+
   <%= form.submit "Search" %>
 <% end %>

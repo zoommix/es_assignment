@@ -2,18 +2,16 @@
 
 class SearchController < ApplicationController
   def index
-    query = params[:query]
-    prompts = Prompt.search(
-      query,
-      fields:       [:content],
-      match:        :word_middle,
-      operator:     :and,
-      highlight:    { tag: '<strong>' },
-      misspellings: { edit_distance: 2 },
-      page:         0,
-      per_page:     10
-    )
+    builder        = SearchQueryBuilder.new(search_params)
+    query, options = builder.call
+    prompts        = Prompt.search(query, **options)
 
-    render 'search/index', locals: { prompts:, query: }
+    render 'search/index', locals: { prompts:, query:, builder: }
+  end
+
+  private
+
+  def search_params
+    params.permit(:commit, :query, :match, :operator, :misspellings)
   end
 end
