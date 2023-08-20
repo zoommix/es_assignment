@@ -3,12 +3,13 @@
 
 require_relative '../config/boot'
 require 'pg'
-require 'elasticsearch'
 require 'dotenv/load'
+require 'faraday'
 
 # rubocop:disable Metrics/MethodLength
 def wait_for_postgres(max_attempts, delay)
   attempts = 0
+
   while attempts < max_attempts
     begin
       PG.connect(
@@ -30,13 +31,13 @@ end
 
 def wait_for_elasticsearch(max_attempts, delay)
   attempts = 0
-  client = Elasticsearch::Client.new(hosts: [ENV['ELASTICSEARCH_URL']])
+
   while attempts < max_attempts
     begin
-      client.ping
+      Faraday.get("#{ENV['ELASTICSEARCH_URL']}/_cluster/health")
       puts 'Elasticsearch is available.'
       break
-    rescue Elasticsearch::Transport::Transport::Errors::ServiceUnavailable
+    rescue Faraday::ConnectionFailed
       attempts += 1
       puts "Waiting for Elasticsearch (Attempt #{attempts}/#{max_attempts})..."
       sleep delay
