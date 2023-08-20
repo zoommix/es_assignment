@@ -14,6 +14,7 @@ services:
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.4
+    restart: always
     container_name: elasticsearch
     ports:
       - "9200:9200"
@@ -32,6 +33,7 @@ services:
       - global
   app:
     build: .
+    restart: always
     ports:
       - "3000:3000"
     volumes:
