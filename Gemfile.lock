@@ -339,6 +339,7 @@ DEPENDENCIES
   debug
   dotenv-rails
   elasticsearch
+  faraday
   importmap-rails
   jbuilder
   pg (~> 1.1)
