@@ -23,4 +23,4 @@ RUN pip3 install -r bin/requirements.txt --break-system-packages
 EXPOSE 3000
 
 # Start the Rails server
-CMD ["sh", "-c", "./bin/setup && rails server -b 0.0.0.0 -p 3000"]
+CMD ["sh", "-c", "./bin/wait_for_services && ./bin/setup && rails server -b 0.0.0.0 -p 3000"]
