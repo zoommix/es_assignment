@@ -13,7 +13,7 @@ development:
 
 test:
   <<: *default
-  database: es_assignment_test
+  database: es_assignment_development # just so that I don't have to mess with the test database and indexing
 
 production:
   <<: *default
